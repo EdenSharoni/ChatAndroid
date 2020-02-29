@@ -1,3 +1,3 @@
-rootProject.name='ChatAndroid'
+rootProject.name='Chat'
 include ':app'
-include ':firebase-chat'
+include ':library'
