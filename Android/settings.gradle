@@ -1,2 +1,3 @@
 rootProject.name='ChatAndroid'
 include ':app'
+include ':firebase-chat'

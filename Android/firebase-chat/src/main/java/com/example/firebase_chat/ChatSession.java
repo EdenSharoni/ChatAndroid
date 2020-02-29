@@ -1,4 +1,4 @@
-package com.example.chatandroid;
+package com.example.firebase_chat;
 
 import android.util.Log;
 
@@ -71,6 +71,5 @@ public class ChatSession<T extends Serializable> {
 
         void onResponse(ArrayList<Map<String, Object>> response);
     }
-
 }
 
