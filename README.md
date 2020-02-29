@@ -15,5 +15,5 @@ In your root-level "build.gradle" file, put:
    
 
        dependencies {
-            implementation 'com.github.EdenSharoni:ChatAndroid:0.0.1'
+            implementation 'com.github.EdenSharoni:ChatAndroid:0.0.2'
        }
