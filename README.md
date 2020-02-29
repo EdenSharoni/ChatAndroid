@@ -1,6 +1,6 @@
 # ChatAndroid
 
-##In your root-level "build.gradle" file, put:
+#In your root-level "build.gradle" file, put:
 
 allprojects {
         repositories {
@@ -10,7 +10,7 @@ allprojects {
    }
    
    
-   ##In your app-level "build.gradle" file, put:
+   #In your app-level "build.gradle" file, put:
    
    dependencies {
         implementation 'com.github.EdenSharoni:ChatAndroid:0.0.1'
