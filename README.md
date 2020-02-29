@@ -1,8 +1,19 @@
-Around the world in 80 Questions (Playground.Rolnik)
+# ChatAndroid
 
-This project is done during our Integrative Software Engineering Course in Afeka
+In your root-level "build.gradle" file, put:
 
-To open client, run in CMD with the domain of the server as the first argument.
+    allprojects {
+            repositories {
+                jcenter()
+                maven { url "https://jitpack.io" }
+            }
+       }
 
-for example
-$ ATW80QClient.jar www.atw.com
+   
+   
+   In your app-level "build.gradle" file, put:
+   
+
+       dependencies {
+            implementation 'com.github.EdenSharoni:ChatAndroid:0.0.5'
+       }
