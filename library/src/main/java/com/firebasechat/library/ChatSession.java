@@ -27,7 +27,7 @@ public class ChatSession<T extends Serializable> {
     private final static String TAG = ChatSession.class.getSimpleName();
     private FirebaseFirestore db;
     private String path;
-    private ArrayList<String> orderByFields = new ArrayList<>();
+    private String fieldToSort = null;
     private ListenerRegistration listenerRegistration;
 
     public ChatSession(FirebaseFirestore db) {
@@ -35,12 +35,15 @@ public class ChatSession<T extends Serializable> {
     }
 
     public void addOrderByFieldValue(String field) {
-        orderByFields.add(field);
+        fieldToSort = field;
     }
 
 
-    public void removeOrderByFieldValue(String field) {
-        orderByFields.remove(field);
+    // returns the removed field
+    public String removeOrderByFieldValue() {
+        String f = fieldToSort;
+        fieldToSort = null;
+        return f;
     }
 
     public void startListening(String path, final ChatListener chatListener) {
@@ -61,13 +64,10 @@ public class ChatSession<T extends Serializable> {
         };
 
         Query query = null;
-        for (String s : orderByFields) {
-            if (query == null) {
-                query = ref.orderBy(s);
-            } else {
-                query.orderBy(s);
-            }
+        if (fieldToSort == null) {
+            query = ref.orderBy(fieldToSort);
         }
+
         if (query == null) {
             listenerRegistration = ref.addSnapshotListener(event);
         } else {
