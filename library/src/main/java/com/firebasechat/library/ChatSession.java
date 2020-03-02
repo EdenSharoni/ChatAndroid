@@ -64,7 +64,7 @@ public class ChatSession<T extends Serializable> {
         };
 
         Query query = null;
-        if (fieldToSort == null) {
+        if (fieldToSort != null) {
             query = ref.orderBy(fieldToSort);
         }
 
