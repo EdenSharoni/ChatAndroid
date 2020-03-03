@@ -51,7 +51,7 @@ public class ChatSession<T extends Serializable> {
         return f;
     }
 
-    public void startListening(String path, final ChatListener chatListener, final int addIdToMap) {
+    public void startListening(String path, final ChatListener chatListener, final int addIdToMap, final boolean getAllDocTypes,final DocumentChange.Type type) {
         this.path = path;
         CollectionReference ref = db.collection(path);
         EventListener<QuerySnapshot> event = new EventListener<QuerySnapshot>() {
@@ -62,7 +62,7 @@ public class ChatSession<T extends Serializable> {
                 ArrayList<Map<String, Object>> newMessages = new ArrayList<>();
                 //prepare new messages...
                 for (DocumentChange a : Objects.requireNonNull(queryDocumentSnapshots).getDocumentChanges()) {
-                    if (a.getType().equals(DocumentChange.Type.ADDED)) {
+                    if (getAllDocTypes || a.getType().equals(type)) {
                         Map<String, Object> map = a.getDocument().getData();
                         if (addIdToMap == ADD_DOCUMENT_ID_TO_MAP) {
                             map.put(DOC_ID_KEY, a.getDocument().getId());
