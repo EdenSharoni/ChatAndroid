@@ -18,9 +18,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -51,7 +53,7 @@ public class ChatSession<T extends Serializable> {
         return f;
     }
 
-    public void startListening(String path, final ChatListener chatListener, final int addIdToMap, final boolean getAllDocTypes,final DocumentChange.Type type) {
+    public void startListening(String path, final ChatListener chatListener, final int addIdToMap, final boolean getAllDocTypes, final DocumentChange.Type type) {
         this.path = path;
         CollectionReference ref = db.collection(path);
         EventListener<QuerySnapshot> event = new EventListener<QuerySnapshot>() {
@@ -87,7 +89,7 @@ public class ChatSession<T extends Serializable> {
         }
     }
 
-    public void sendMessage(T message, final MessageCallback callback) {
+    public void sendMessage(T message, @Nullable final MessageCallback callback) {
         db.collection(path).add(message).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
@@ -108,11 +110,25 @@ public class ChatSession<T extends Serializable> {
         });
     }
 
-    public void deleteMessage(final String id, final MessageCallback callback) {
+
+    public void deleteMessage(final String id, @Nullable final MessageCallback callback) {
         db.collection(path).document(id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Log.d(TAG, "deleteMessage: Message successfully deleted from db");
+                if (callback != null) {
+                    callback.onSuccess(id);
+                }
+
+            }
+        });
+    }
+
+    public void updateMessage(final String id, HashMap<String, Object> map, @Nullable final MessageCallback callback) {
+        db.collection(path).document(id).set(map, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d(TAG, "updateMessage: Message successfully deleted from db");
                 if (callback != null) {
                     callback.onSuccess(id);
                 }
@@ -136,7 +152,7 @@ public class ChatSession<T extends Serializable> {
     }
 
     public interface MessageCallback {
-        void onSuccess(String MessageId);
+        void onSuccess(String messageId);
 
         void onFailure();
     }
